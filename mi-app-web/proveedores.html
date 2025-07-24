@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores - Token Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (mismo que otras páginas) -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-coins"></i>
+                    <h2>Token Manager</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <h3 id="userName">Admin User</h3>
+                        <p id="userRole">Administrador</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-chart-pie"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="modelos.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Modelos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="proveedores.html" class="nav-link active">
+                        <i class="fas fa-building"></i>
+                        Proveedores
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="ingresos.html" class="nav-link">
+                        <i class="fas fa-arrow-up"></i>
+                        Ingresos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pagos.html" class="nav-link">
+                        <i class="fas fa-arrow-down"></i>
+                        Pagos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="reportes.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Reportes
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="page-title">Gestión de Proveedores</h1>
+                <div class="header-actions">
+                    <select id="filterEstado" class="btn btn-secondary">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="inactivo">Inactivos</option>
+                    </select>
+                    <button class="btn btn-info btn-sm" onclick="filtrarProveedores()">
+                        <i class="fas fa-filter"></i>
+                        Filtrar
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="exportarProveedores()">
+                        <i class="fas fa-download"></i>
+                        Exportar
+                    </button>
+                    <button class="btn btn-primary" onclick="openProviderModal()" data-permission="proveedores">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Proveedor
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Formulario de Proveedor -->
+                <div id="providerForm" class="form-section hidden">
+                    <h3 id="formTitle">Nuevo Proveedor</h3>
+                    <form id="providerFormElement">
+                        <input type="hidden" id="providerId">
+                        <div class="form-row">
+                            <div class="field-group">
+                                <label for="nombre">Nombre del Proveedor <span style="color: var(--danger);">*</span></label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Ej: OnlyFans, Chaturbate" required>
+                                <small style="color: var(--text-muted);">El nombre debe ser único</small>
+                            </div>
+                            <div class="field-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea id="descripcion" name="descripcion" placeholder="Descripción opcional del proveedor" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row" style="margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Guardar Proveedor
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelProviderForm()">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Lista de Proveedores -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Lista de Proveedores</h3>
+                        <div class="header-actions">
+                            <input type="text" id="searchInput" placeholder="Buscar proveedor..." class="btn btn-secondary" style="max-width: 250px;">
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Total Tokens</th>
+                                <th>Total Ingresos</th>
+                                <th>Último Ingreso</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proveedoresTable">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <!-- <script src="js/proveedores.js"></script> -->
+</body>
+</html>

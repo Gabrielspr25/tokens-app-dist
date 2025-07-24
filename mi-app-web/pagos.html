@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos a Modelos - Token Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-coins"></i>
+                    <h2>Token Manager</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <h3 id="userName">Admin User</h3>
+                        <p id="userRole">Administrador</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-chart-pie"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="modelos.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Modelos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="proveedores.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Proveedores
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="ingresos.html" class="nav-link">
+                        <i class="fas fa-arrow-up"></i>
+                        Ingresos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pagos.html" class="nav-link active">
+                        <i class="fas fa-arrow-down"></i>
+                        Pagos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="reportes.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Reportes
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="page-title">Pagos a Modelos</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openPagoModal()" data-permission="pagos">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Pago
+                    </button>
+                    <button class="btn btn-secondary" onclick="openCalculadoraPagos()">
+                        <i class="fas fa-calculator"></i>
+                        Calculadora
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Resumen de Pagos -->
+                <div class="stats-grid" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-value" id="totalPagadoMes">$0</div>
+                        <div class="stat-label">Pagado Este Mes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-value text-warning" id="pagosPendientes">0</div>
+                        <div class="stat-label">Pagos Pendientes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="stat-value" id="diferenciasTotal">$0</div>
+                        <div class="stat-label">Diferencias Acumuladas</div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Pago -->
+                <div id="pagoForm" class="form-section hidden">
+                    <h3 id="formTitle">Nuevo Pago</h3>
+                    <form id="pagoFormElement">
+                        <input type="hidden" id="pagoId">
+                        
+                        <!-- Información básica -->
+                        <div class="form-row">
+                            <div class="field-group">
+                                <label for="fecha">Fecha <span style="color: var(--danger);">*</span></label>
+                                <input type="date" id="fecha" name="fecha" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="proveedor">Proveedor <span style="color: var(--danger);">*</span></label>
+                                <select id="proveedor" name="proveedor" required>
+                                    <option value="">Seleccionar proveedor...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field-group">
+                                <label for="modelo">Modelo <span style="color: var(--danger);">*</span></label>
+                                <select id="modelo" name="modelo" required>
+                                    <option value="">Seleccionar modelo...</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label for="tokens">Tokens Pagados <span style="color: var(--danger);">*</span></label>
+                                <input type="number" id="tokens" name="tokens" min="1" step="1" placeholder="15000" required>
+                            </div>
+                        </div>
+
+                        <!-- Cálculos automáticos -->
+                        <div class="form-section" style="background: var(--bg-input); margin: 1.5rem 0;">
+                            <h4 style="margin-bottom: 1rem; color: var(--text-primary);">
+                                <i class="fas fa-calculator"></i> Cálculos Automáticos
+                            </h4>
+                            <div class="form-row">
+                                <div class="field-group">
+                                    <label>% del Modelo</label>
+                                    <input type="text" id="porcentajeModelo" readonly placeholder="Se completa automáticamente">
+                                </div>
+                                <div class="field-group">
+                                    <label>Monto Generado (USD)</label>
+                                    <input type="number" id="montoGenerado" step="0.01" readonly placeholder="0.00">
+                                    <small style="color: var(--text-muted);">Tokens × $0.05 × % del modelo</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monto real enviado -->
+                        <div class="form-row">
+                            <div class="field-group">
+                                <label for="montoEnviado">Monto Enviado (USD) <span style="color: var(--danger);">*</span></label>
+                                <input type="number" id="montoEnviado" name="montoEnviado" step="0.01" placeholder="450.00" required>
+                                <small style="color: var(--text-muted);">Cantidad realmente enviada al modelo</small>
+                            </div>
+                            <div class="field-group">
+                                <label>Diferencia (USD)</label>
+                                <input type="number" id="diferencia" readonly>
+                                <small id="diferenciaHelp" style="color: var(--text-muted);">Generado - Enviado</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="field-group">
+                                <label for="notas">Notas del Pago</label>
+                                <textarea id="notas" name="notas" placeholder="Observaciones, método de pago, etc..." rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row" style="margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Confirmar Pago
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelPagoForm()">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Lista de Pagos -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Historial de Pagos</h3>
+                        <div class="header-actions">
+                            <select id="filterModelo" class="btn btn-secondary">
+                                <option value="">Todos los modelos</option>
+                            </select>
+                            <select id="filterEstado" class="btn btn-secondary">
+                                <option value="">Todos los estados</option>
+                                <option value="completo">Completos</option>
+                                <option value="diferencia">Con Diferencia</option>
+                            </select>
+                            <input type="date" id="filterFechaInicio" class="btn btn-secondary" placeholder="Fecha inicio">
+                            <input type="date" id="filterFechaFin" class="btn btn-secondary" placeholder="Fecha fin">
+                            <button class="btn btn-info btn-sm" onclick="aplicarFiltros()">
+                                <i class="fas fa-filter"></i>
+                                Filtrar
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="exportarPagos()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="limpiarFiltros()">
+                                <i class="fas fa-eraser"></i>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Totalizador con filtros -->
+                    <div class="filtros-totales" style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1rem; border-radius: 8px; display: none;" id="totalizadorFiltros">
+                        <div class="stats-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Registros:</span>
+                                <span class="stat-value" id="totalRegistrosFiltro">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Tokens:</span>
+                                <span class="stat-value" id="totalTokensFiltro">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Generado:</span>
+                                <span class="stat-value" id="totalGeneradoFiltro">$0.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Enviado:</span>
+                                <span class="stat-value" id="totalEnviadoFiltro">$0.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Diferencia:</span>
+                                <span class="stat-value" id="totalDiferenciaFiltro">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Modelo</th>
+                                <th>Proveedor</th>
+                                <th>Tokens</th>
+                                <th>% Modelo</th>
+                                <th>Generado</th>
+                                <th>Enviado</th>
+                                <th>Diferencia</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagosTable">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Calculadora -->
+    <div id="calculadoraModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-calculator"></i> Calculadora de Pagos</h3>
+                <button onclick="closeCalculadora()" class="btn-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="field-group">
+                        <label for="calcTokens">
+                            <i class="fas fa-coins"></i> Tokens
+                        </label>
+                        <input type="number" id="calcTokens" placeholder="1000" min="1" oninput="calcularPago()">
+                    </div>
+                    <div class="field-group">
+                        <label for="calcModelo">
+                            <i class="fas fa-user"></i> Modelo
+                        </label>
+                        <select id="calcModelo" onchange="calcularPago()">
+                            <option value="">Seleccionar modelo...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="field-group">
+                        <label for="calcPorcentajeManual">
+                            <i class="fas fa-percentage"></i> % Manual (opcional)
+                        </label>
+                        <input type="number" id="calcPorcentajeManual" placeholder="75.00" step="0.01" min="0" max="100" oninput="calcularPago()">
+                        <small>Deja vacío para usar el % del modelo seleccionado</small>
+                    </div>
+                    <div class="field-group">
+                        <label>
+                            <i class="fas fa-dollar-sign"></i> Precio por Token
+                        </label>
+                        <input type="number" id="calcPrecioToken" value="0.05" step="0.001" min="0" oninput="calcularPago()">
+                    </div>
+                </div>
+                
+                <!-- Resultado detallado -->
+                <div class="calc-result" style="background: var(--bg-input); padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary);"><i class="fas fa-chart-line"></i> Resultado del Cálculo:</h4>
+                    
+                    <div class="calc-details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="calc-item">
+                            <span class="calc-label">Tokens ingresados:</span>
+                            <span class="calc-value" id="calcTokensDisplay">0</span>
+                        </div>
+                        <div class="calc-item">
+                            <span class="calc-label">Precio por token:</span>
+                            <span class="calc-value" id="calcPrecioDisplay">$0.05</span>
+                        </div>
+                        <div class="calc-item">
+                            <span class="calc-label">% del modelo:</span>
+                            <span class="calc-value" id="calcPorcentajeDisplay">0%</span>
+                        </div>
+                        <div class="calc-item">
+                            <span class="calc-label">Valor base total:</span>
+                            <span class="calc-value" id="calcValorBase">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="calc-final" style="text-align: center; margin-top: 1.5rem; padding: 1rem; background: var(--primary-light); border-radius: 6px;">
+                        <h3 style="margin: 0; color: var(--primary);">
+                            <i class="fas fa-money-bill-wave"></i> 
+                            Ganancia del Modelo: <span id="calcGanancia" style="color: var(--success);">$0.00</span>
+                        </h3>
+                        <small id="calcFormula" style="color: var(--text-muted); margin-top: 0.5rem; display: block;">
+                            Fórmula: 0 × $0.05 × 0% = $0.00
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="form-row" style="margin-top: 1.5rem; justify-content: space-between;">
+                    <button type="button" class="btn btn-secondary" onclick="limpiarCalculadora()">
+                        <i class="fas fa-eraser"></i>
+                        Limpiar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="copiarResultado()">
+                        <i class="fas fa-copy"></i>
+                        Copiar Resultado
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/pagos.js"></script>
+</body>
+</html>
