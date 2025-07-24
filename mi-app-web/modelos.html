@@ -77,11 +77,13 @@
             <header class="main-header">
                 <h1 class="page-title">Gestión de Modelos</h1>
                 <div class="header-actions">
-                    <select id="filterEstado" class="btn btn-secondary">
+                    <select id="filterEstado" class="form-control">
                         <option value="">Todos los estados</option>
                         <option value="activo">Activos</option>
                         <option value="inactivo">Inactivos</option>
                     </select>
+                    <input type="date" id="filterFechaInicio" class="form-control" placeholder="Fecha inicio">
+                    <input type="date" id="filterFechaFin" class="form-control" placeholder="Fecha fin">
                     <button class="btn btn-info btn-sm" onclick="filtrarModelos()">
                         <i class="fas fa-filter"></i>
                         Filtrar
