@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Token Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-coins"></i>
+                    <h2>Token Manager</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <h3 id="userName">Admin User</h3>
+                        <p id="userRole">Administrador</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-chart-pie"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="modelos.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Modelos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="proveedores.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Proveedores
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="ingresos.html" class="nav-link">
+                        <i class="fas fa-arrow-up"></i>
+                        Ingresos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pagos.html" class="nav-link">
+                        <i class="fas fa-arrow-down"></i>
+                        Pagos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="reportes.html" class="nav-link active">
+                        <i class="fas fa-file-alt"></i>
+                        Reportes
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="page-title">Reportes</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Exportar Todo
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Reportes disponibles -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-value">Ingresos</div>
+                        <div class="stat-label">Reporte por períodos</div>
+                        <button class="btn btn-primary mt-2">Generar</button>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-value">Pagos</div>
+                        <div class="stat-label">Pagos a modelos</div>
+                        <button class="btn btn-primary mt-2">Generar</button>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">Modelos</div>
+                        <div class="stat-label">Performance por modelo</div>
+                        <button class="btn btn-primary mt-2">Generar</button>
+                    </div>
+                </div>
+
+                <!-- Mensaje temporal -->
+                <div class="form-section">
+                    <h3>🚧 Módulo en Desarrollo</h3>
+                    <p>El módulo de reportes está en desarrollo. Próximamente tendrás disponible:</p>
+                    <ul style="margin: 1rem 0; padding-left: 2rem; color: var(--text-secondary);">
+                        <li>Reportes detallados de ingresos</li>
+                        <li>Análisis de pagos por modelo</li>
+                        <li>Gráficos de performance</li>
+                        <li>Exportación en múltiples formatos</li>
+                        <li>Filtros avanzados por fechas</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

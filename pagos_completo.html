@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos - Token Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <span>Token Manager</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="modelos.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Modelos</span>
+            </a>
+            <a href="proveedores.html" class="nav-item">
+                <i class="fas fa-building"></i>
+                <span>Proveedores</span>
+            </a>
+            <a href="ingresos.html" class="nav-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Ingresos</span>
+            </a>
+            <a href="pagos.html" class="nav-item active">
+                <i class="fas fa-credit-card"></i>
+                <span>Pagos</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Usuario</span>
+                    <span class="user-role" id="userRole">Rol</span>
+                </div>
+            </div>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-credit-card"></i> Gestión de Pagos</h1>
+            <p>Registra pagos realizados a modelos</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon bg-green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="pagadoMes">$1,250</h3>
+                    <p>Pagado Este Mes</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-orange">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="pagosPendientes">$425</h3>
+                    <p>Pagos Pendientes</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-blue">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalDiferencias">$75</h3>
+                    <p>Total Diferencias</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-purple">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="modelosPagados">3</h3>
+                    <p>Modelos Pagados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2>Registrar Nuevo Pago</h2>
+                <button class="btn btn-info" onclick="openCalculator()">
+                    <i class="fas fa-calculator"></i>
+                    Calculadora de Pagos
+                </button>
+            </div>
+            <div class="card-body">
+                <form id="pagoForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="fechaPago">
+                            <i class="fas fa-calendar"></i>
+                            Fecha *
+                        </label>
+                        <input type="date" id="fechaPago" name="fechaPago" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="proveedorPago">
+                            <i class="fas fa-building"></i>
+                            Proveedor *
+                        </label>
+                        <select id="proveedorPago" name="proveedorPago" required>
+                            <option value="">Seleccionar proveedor...</option>
+                            <option value="OnlyFans">OnlyFans</option>
+                            <option value="Chaturbate">Chaturbate</option>
+                            <option value="ManyVids">ManyVids</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modeloPago">
+                            <i class="fas fa-user"></i>
+                            Modelo *
+                        </label>
+                        <select id="modeloPago" name="modeloPago" required>
+                            <option value="">Seleccionar modelo...</option>
+                            <option value="Luna_Star (60%)">Luna_Star (60%)</option>
+                            <option value="Venus_Moon (55%)">Venus_Moon (55%)</option>
+                            <option value="Sofia_Dreams (50%)">Sofia_Dreams (50%)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tokensPagados">
+                            <i class="fas fa-coins"></i>
+                            Tokens Pagados *
+                        </label>
+                        <input type="number" id="tokensPagados" name="tokensPagados" required placeholder="Ej: 1000" min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="montoGenerado">
+                            <i class="fas fa-calculator"></i>
+                            $ Generado (Automático)
+                        </label>
+                        <input type="text" id="montoGenerado" name="montoGenerado" readonly placeholder="tokens * 0.05 * %">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="montoEnviado">
+                            <i class="fas fa-money-bill-wave"></i>
+                            $ Enviado (Real) *
+                        </label>
+                        <input type="number" id="montoEnviado" name="montoEnviado" step="0.01" required placeholder="Cantidad real enviada">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="diferencia">
+                            <i class="fas fa-chart-line"></i>
+                            Diferencia
+                        </label>
+                        <input type="text" id="diferencia" name="diferencia" readonly placeholder="Se calcula automáticamente">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="notas">
+                            <i class="fas fa-sticky-note"></i>
+                            Notas (Opcional)
+                        </label>
+                        <textarea id="notas" name="notas" rows="3" placeholder="Comentarios adicionales sobre el pago..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions full-width">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Registrar Pago
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-times"></i>
+                            Limpiar
+                        </button>
+                        <button type="button" class="btn btn-info" onclick="previewPayment()">
+                            <i class="fas fa-eye"></i>
+                            Vista Previa
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payments History -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2>Historial de Pagos</h2>
+                <div class="card-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchPago" placeholder="Buscar...">
+                    </div>
+                    <select id="filterModelo" class="filter-select">
+                        <option value="">Todos los modelos</option>
+                        <option value="Luna_Star">Luna_Star</option>
+                        <option value="Venus_Moon">Venus_Moon</option>
+                        <option value="Sofia_Dreams">Sofia_Dreams</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table id="pagosTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Modelo</th>
+                                <th>Proveedor</th>
+                                <th>Tokens</th>
+                                <th>$ Generado</th>
+                                <th>$ Enviado</th>
+                                <th>Diferencia</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargan dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/pagos.js"></script>
+</body>
+</html>

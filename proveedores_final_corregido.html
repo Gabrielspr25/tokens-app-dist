@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores - Token Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <span>Token Manager</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="modelos.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Modelos</span>
+            </a>
+            <a href="proveedores.html" class="nav-item active">
+                <i class="fas fa-building"></i>
+                <span>Proveedores</span>
+            </a>
+            <a href="ingresos.html" class="nav-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Ingresos</span>
+            </a>
+            <a href="pagos.html" class="nav-item">
+                <i class="fas fa-credit-card"></i>
+                <span>Pagos</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Usuario</span>
+                    <span class="user-role" id="userRole">Rol</span>
+                </div>
+            </div>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-building"></i> Gestión de Proveedores</h1>
+            <p>Administra las plataformas y empresas que envían tokens</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon bg-blue">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalProveedores">3</h3>
+                    <p>Total Proveedores</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="proveedoresActivos">3</h3>
+                    <p>Activos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-orange">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalTokensProveedores">35K</h3>
+                    <p>Total Tokens</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon bg-purple">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalIngresosProveedores">$1,750</h3>
+                    <p>Total Ingresos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="form-title">Nuevo Proveedor</h2>
+            </div>
+            <div class="card-body">
+                <form id="proveedorForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">
+                            <i class="fas fa-building"></i>
+                            Nombre del Proveedor *
+                        </label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ej: OnlyFans, Chaturbate..." maxlength="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcion">
+                            <i class="fas fa-info-circle"></i>
+                            Descripción
+                        </label>
+                        <input type="text" id="descripcion" name="descripcion" placeholder="Descripción opcional del proveedor" maxlength="255">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-plus"></i>
+                            Crear Proveedor
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetProveedorForm()">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2>Lista de Proveedores</h2>
+                <div class="card-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchProveedor" placeholder="Buscar proveedor...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table id="proveedoresTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Proveedor</th>
+                                <th>Estado</th>
+                                <th>Total Tokens</th>
+                                <th>Total Ingresos</th>
+                                <th>Último Ingreso</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargan dinámicamente via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/proveedores.js"></script>
+    
+    <!-- Funciones auxiliares -->
+    <script>
+        // Función global para resetear formulario
+        function resetProveedorForm() {
+            if (window.proveedoresManager) {
+                window.proveedoresManager.resetForm();
+            }
+        }
+        
+        // Función global para logout
+        function logout() {
+            if (window.auth && typeof window.auth.logout === 'function') {
+                window.auth.logout();
+            }
+        }
+        
+        // Verificar elementos al cargar DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM cargado');
+            console.log('✅ Formulario:', document.getElementById('proveedorForm') ? 'Encontrado' : '❌ No encontrado');
+            console.log('✅ Tabla:', document.getElementById('proveedoresTable') ? 'Encontrado' : '❌ No encontrado');
+            console.log('✅ Input nombre:', document.getElementById('nombre') ? 'Encontrado' : '❌ No encontrado');
+            console.log('✅ Input descripción:', document.getElementById('descripcion') ? 'Encontrado' : '❌ No encontrado');
+            console.log('✅ Botón submit:', document.querySelector('.btn-submit') ? 'Encontrado' : '❌ No encontrado');
+        });
+    </script>
+</body>
+</html>
